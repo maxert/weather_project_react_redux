@@ -20,14 +20,7 @@ export default function AllFunction(state = initialState, action) {
     });
 
     return element;
-  } else if (action.type === "ADD_INFO") {
-    let element = state.map(element => {
-      
-      return element;
-    });
-
-    return element;
-  }else if(action.type==="REMOVE_ITEMS"){
+  } else if(action.type==="REMOVE_ITEMS"){
     
   
       let newArray = state.slice()

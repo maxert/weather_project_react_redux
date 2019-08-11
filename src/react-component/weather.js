@@ -14,6 +14,7 @@ class Weather extends Component {
   };
 
   updateItems = (i, event) => {
+    event.currentTarget.offsetParent.querySelectorAll(".element_info")[0].classList.remove("active");
     let count_url = "http://api.openweathermap.org/data/2.5/forecast?id=" + i + "&lang=ru&units=metric&appid=" + API_KEY;
     axios
       .get(count_url)
@@ -42,6 +43,7 @@ class Weather extends Component {
   
 
   deleteItems=(id,event)=>{
+    event.currentTarget.offsetParent.querySelectorAll(".element_info")[0].classList.remove("active");
     this.props.onRemoveItems(id);
   }
   addList = () => {
@@ -125,9 +127,6 @@ export default connect(
     ownProps
   }),
   dispatch => ({
-    onAddInfo: (listAll, idCity) => {
-      dispatch({ type: "ADD_INFO", list: listAll, id: idCity });
-    },
     onUpdateList: (listItems, idCity) => {
       dispatch({ type: "UPDATE_ITEMS", list: listItems, id: idCity });
     },
