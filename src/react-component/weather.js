@@ -19,19 +19,19 @@ class Weather extends Component {
     axios
       .get(count_url)
       .then(response => {
-        var data = new Date(new Date().toString().split("GMT")[0] + " UTC").toISOString().split("T")[0];
         var dateTime = new Date();
         var time = dateTime.getHours() + ":" + dateTime.getMinutes() + ":" + dateTime.getSeconds();
-        var timeNow = data + " " + time;
+        
         var isBoolean = true;
         var timeNowItems = response.data.list.filter(Element => {
-          if (Element.dt_txt > timeNow) {
+          var newTime = Element.dt_txt.split(' ')[1].split(":")[0];
+          var getTime =time.split(":")[0];
+          if (Number(newTime)> Number(getTime)) {
             if (isBoolean === true) {
               isBoolean = false;
               return Element;
             }
           }
-          return Element;
         });
         this.props.onUpdateList(timeNowItems[0], i);
         
