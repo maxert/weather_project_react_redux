@@ -9,7 +9,24 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
+.list{
+  display: flex;
+  position: relative;
+}
+.list_all_city{
+  &.active{
+    display: block;
+  }
+  padding: 0px;
+  display: none;
+  list-style: none;
+  max-height:300px;
+  position: absolute;
+  top: 40px;
+  left: 0px;
+ overflow-y:scroll;
+ width: 100%;
+}
 .erorr_404 {
   height: 100vh;
   width: 100vw;
@@ -26,7 +43,9 @@ body {
 strong {
   font-weight: bold;
 }
-
+.header_click{
+  display: flex;
+}
 .items-row {
   position: relative;
   margin-bottom: 50px;

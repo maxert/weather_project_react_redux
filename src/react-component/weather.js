@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { getAllList } from "../getElement/getCityAll";
 import { Link } from "react-router-dom";
 import axios from "axios";
-
+import dataCity from "../JSON/city.list.json";
 const API_KEY = "3254e6994606da89542269b2c8e5b2ef";
 class Weather extends Component {
   componentDidMount() {
@@ -46,22 +46,59 @@ class Weather extends Component {
     event.currentTarget.offsetParent.querySelectorAll(".element_info")[0].classList.remove("active");
     this.props.onRemoveItems(id);
   }
+  KeyPress=(e)=>{
+
+    if(e.charCode===13){
+      document.querySelectorAll(".list_all_city")[0].classList.remove("active");
+      let count_url = "http://api.openweathermap.org/data/2.5/weather?q=" + this.listvalue.value + "&lang=ru&units=metric&appid=" + API_KEY;
+    axios
+      .get(count_url)
+      .then(response => {
+        this.props.onAddList(response.data);
+        this.listvalue.value="";
+      })
+      .catch(err => {
+        console.log("ERROR:", err.message);
+      });
+  };
+  
+    }
+  
   addList = () => {
     let count_url = "http://api.openweathermap.org/data/2.5/weather?q=" + this.listvalue.value + "&lang=ru&units=metric&appid=" + API_KEY;
     axios
       .get(count_url)
       .then(response => {
         this.props.onAddList(response.data);
+          this.listvalue.value="";
       })
       .catch(err => {
         console.log("ERROR:", err.message);
       });
   };
+  valueCity=()=>{
+    if(this.listvalue.value.length>0){
+      document.querySelectorAll(".list_all_city")[0].classList.add("active");
+    var Element = dataCity.filter((Element,i)=>{
+      return Element.name.toLowerCase().search(this.listvalue.value.toLowerCase())!==-1;
+     });
+     this.props.onChangeList(Element);
+    }else{
+      document.querySelectorAll(".list_all_city")[0].classList.remove("active");
+    }
+  }
+  addInput=(name)=>{
+    this.listvalue.value=name;
+  }
   render() {
 
     return (
       <div>
+      <div className="header_click">
+      <div className="list">
         <input
+        onChange={this.valueCity.bind(this)}
+        onKeyPress={this.KeyPress.bind(this)}
           name='text'
           id=''
           type='text'
@@ -69,7 +106,19 @@ class Weather extends Component {
             this.listvalue = input;
           }}
         />
+        
+        <ul className="list_all_city">
+          {this.props.valueList.map((Element,i)=>{
+            if(i<20){
+           return <li key={i} onClick={this.addInput.bind(this,Element.name)}  dangerouslySetInnerHTML={{
+          __html : Element.name.replace(this.listvalue.value,'<strong>'+this.listvalue.value+'</strong>')
+        }}></li>
+            }
+          })}
+        </ul>
+        </div>
         <button onClick={this.addList.bind(this)}>Добавить погоду</button>
+        </div>
 
          
         <div className='container container-weather'>
@@ -124,6 +173,7 @@ export default connect(
   
   (state,ownProps) => ({
     listCityAll: state.ListInfo,
+    valueList:state.Change,
     ownProps
   }),
   dispatch => ({
@@ -138,6 +188,9 @@ export default connect(
     },
     onRemoveItems:(idCity)=>{
       dispatch({ type: "REMOVE_ITEMS",  id: idCity });
+    },
+    onChangeList:(value)=>{
+      dispatch({ type: "CHANGE_ITEMS",  value: value });
     }
   }),
 )(Weather);
