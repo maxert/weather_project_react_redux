@@ -57,7 +57,7 @@
     "cssnano": "^4.1.10",
     "fast-async": "^6.3.8",
     "fs": "0.0.2",
-    "gsap": "^2.1.3",
+    "gsap": "^3.6.0",
     "ignore-loader": "^0.1.2",
     "normalize.css": "^8.0.1",
     "postcss-loader": "^3.0.0",
